@@ -72,14 +72,12 @@ void añadir(int valor, int lat, int lon) {
             resize();  
         }
 
-        for (int j = lon; j < filas - 1; j++) {
-            for (int i = lat; i < columnas - 1; i++) {
-                m[i] = m[i + 1];
+        for (int j = filas - 1; j > lon; j--) {
+            for (int i = 0; i < columnas; i++) {
+                m[j * columnas + i] = m[(j - 1) * columnas + i];
             }
         }
-        
-
-        m[lat] = valor;
+        m[lon * columnas + lat] = valor;
         size++;  
     }
     
