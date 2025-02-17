@@ -1,4 +1,3 @@
-
 #include <iostream>
 using namespace std;
 
@@ -7,46 +6,20 @@ private:
     int* v;
     int capacity;
     int size;
-//*****Partes de un vector******//    
-    
-public:
 
- // *******Creacion de un vector*******// 
+public:
     Vector() {
         capacity = 10;  
         size = 0;
         v = new int[capacity];
     }
-    
 
- // *****Imprimir el Vector*****//  
-    void print(){
-        for(int i =0; i<size ; i++){
-            cout <<v[i]<<"\t";
-        }
+    Vector(int c) {
+        capacity = c;  
+        size = 0;
+        v = new int[capacity];
     }
- 
- 
-  // *****Agrandar el Vector*****// 
-    void resize() {
-        capacity *= 2; 
-        int* temp = new int[capacity];
-        for (int i = 0; i < size; i++) {
-            temp[i] = v[i];  
-        }
-        delete[] v;  
-        v = temp;   
-    }
-   
-    // *****Añadir tamaño al vector********// 
-    void add(int d) {
-        if (size == capacity) {
-            resize();  
-        }
-        v[size++] = d;
-    }
-    
-     // *****para un valor index en ese numero de posicion se guardara un dato*******// 
+
     void añadir(int valor, int index) {
         if (index < 0 || index > size) {
             cout << "Índice fuera de rango!" << endl;
@@ -64,8 +37,7 @@ public:
         v[index] = valor;
         size++;  
     }
-    
-     // ******Borrar un dato en posicion index********// 
+
     void quitar(int borrar) {
         if (borrar < 0 || borrar >= size) {
             cout << "Índice fuera de rango!" << endl;
@@ -78,9 +50,37 @@ public:
 
         size--;  
     }
-    
-     // *****Conseguir el index de un numero********// 
-    
+
+    void add(int d) {
+        if (size == capacity) {
+            resize();  
+        }
+        v[size++] = d;
+    }
+
+    void print(){
+        for(int i = 0; i < size; i++) {
+            cout << v[i] << "\t";
+        }
+        cout << endl;
+    }
+
+    void resize() {
+        capacity *= 2;
+        int* new_v = new int[capacity];
+        for (int i = 0; i < size; i++) {
+            new_v[i] = v[i];
+        }
+        delete[] v;
+        v = new_v;
+    }
+
+    ~Vector() {
+        delete[] v;
+    }
+
+    int getCapacity() { return capacity; }
+    int getsize() { return size; }
     int getI(int index) {
         if (index >= 0 && index < size) {
             return v[index];
@@ -89,34 +89,63 @@ public:
             return -1; 
         }
     }
-    
- // *****Borrar y ahorrar la memoria******// 
-~Vector() {
-        delete[] v;
-    }
 };
-
 
 int main() {
     srand(time(0));
     Vector v;
     int datos;
-    
-    for (int i =0; i<10; i++){
-        v.add(rand()%100);
+
+    for (int i = 0; i < 10; i++) {
+        v.add(rand() % 100);
     }
-    cout<<"Lista de precios:"<<endl;
-    
+
+    cout << "La capacidad es: " << v.getCapacity() << endl;
+    cout << "El tamaño del vector es: " << v.getsize() << endl;
+
+    int index;
+    cout << "Ingrese el número de la posición para obtener su valor: ";
+    cin >> index;
+
     v.print();
-    
-    
-    
-    
-    
-    
-    
+    cout << "**************" << endl;
+
+    int value = v.getI(index);
+
+    if (value != -1) { 
+        cout << "El valor en la posición " << index << " es: " << value << endl;
+    }
+
+    int cambio;
+    cout << "Ingrese el número que desea añadir: ";
+    cin >> cambio;
+
+    int ins;
+    cout << "Ingrese el índice al que desea añadir: ";
+    cin >> ins;
+
+    v.añadir(cambio, ins);
+
+    cout << "La capacidad es: " << v.getCapacity() << endl;
+    cout << "El tamaño del vector es: " << v.getsize() << endl;
+
+    cout << "Ingrese el número de la posición para obtener su valor: ";
+    cin >> index;
+    int value1 = v.getI(index);
+    if (value1 != -1) { 
+        cout << "El valor en la posición " << index << " es: " << value1 << endl;
+    }
+
+    v.print();
+
+    int borrar;
+    cout << "Ingrese el índice del número que quiere borrar: ";
+    cin >> borrar;
+
+    v.quitar(borrar);
+
+    cout << "Vector después de borrar: ";
+    v.print();
+
     return 0;
-}
-
-
-
+    }
